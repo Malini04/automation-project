@@ -1,4 +1,4 @@
-import User from '../../../models/User'; // Adjust the path as needed
+import User from '@/models/User';
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 
