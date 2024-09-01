@@ -6,7 +6,9 @@ const execPromise = util.promisify(exec);
 
 export async function POST(request) {
   try {
-    const response = await execPromise('node ../internshala-backend/server.js');
+    // const response = await execPromise('node ../internshala-backend/server.js');
+    const response = await execPromise('node ../internshala-frontend/server.js');
+
     console.log(response.stdout);
     return NextResponse.json({ success: true, message: 'Script executed successfully' });
   } catch (error) {

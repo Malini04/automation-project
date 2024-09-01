@@ -1,5 +1,5 @@
 const puppeteer = require("puppeteer");
-const coverLetter = require("./coverLetter"); // Assuming coverLetter.js is in the same directory
+// const coverLetter = require("./coverLetter"); // Assuming coverLetter.js is in the same directory
 
 const loginLink = "https://internshala.com/registration/student";
 const email = "wpbackup4251@gmail.com";

@@ -1,5 +1,4 @@
 "use client";
-import { NextResponse } from "next/server";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -39,7 +38,7 @@ const Page = () => {
     }
 
     try {
-      const res = await fetch("api/userExists", {
+      const res = await fetch("api/UserExists", {
         method: "POST",
         headers:{
           "Content-Type" : "application/json",

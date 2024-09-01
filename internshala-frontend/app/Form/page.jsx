@@ -52,9 +52,35 @@ const CategoryPage = () => {
     }
   };
 
+  const handleSendCredentials = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("/api/send-credentials", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const result = await res.json();
+
+      if (res.ok) {
+        // Handle success, maybe redirect to a new page
+        // router.push("/some_page");
+        console.log("Successfully sent the credentials..")
+      } else {
+        setError(result.message || "An error occurred. Please try again.");
+      }
+      
+    } catch (error) {
+      console.log("Error sending the credentials", error);
+    }
+  } 
+
   return (
     <div className="w-full max-w-md p-8 space-y-6 bg-white border border-gray-200 rounded-lg shadow-lg">
-      <form>
+      <form onSubmit={handleSendCredentials}>
         User Details
         <input
             type="text"
@@ -74,6 +100,7 @@ const CategoryPage = () => {
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             required
           />
+          <button type="submit">Send</button>
       </form>
       
       <form className="w-full max-w-md space-y-6" onSubmit={handleSubmit}>
