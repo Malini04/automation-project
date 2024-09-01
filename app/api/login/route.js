@@ -1,4 +1,4 @@
-import Register from '../../../models/register'; // Adjust the path as needed
+import User from '../../../models/User'; // Adjust the path as needed
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 
@@ -22,7 +22,7 @@ export async function POST(req) {
   }
 
   // Check if the user exists
-  const user = await Register.findOne({ gmail, username });
+  const user = await User.findOne({ gmail, username });
   if (!user) {
     console.log('User not found');
     return new Response(JSON.stringify({ message: "User not found" }), { status: 404 });
