@@ -1,9 +1,12 @@
 import "@/styles/globals.css";
+import Link from "next/link";
 
 function Home() {
   return (
     <section className="w-full flex-center flex-col">
       <div className="w-full flex-center flex-col">
+
+        <Link href="/products">Go to Products Page</Link>
 
         <h1 className="head_text text-center">
           Discover & Apply

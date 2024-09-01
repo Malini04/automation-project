@@ -1,14 +1,19 @@
-"use client"
-import React, { useState } from 'react';
+"use client";
+import { NextResponse } from "next/server";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
-  const [gmail, setGmail] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [gmail, setGmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const router = useRouter();
 
   const handlePasswordVisibilityChange = (event) => {
     setPasswordVisible(event.target.checked);
@@ -18,24 +23,72 @@ const Page = () => {
     setConfirmPasswordVisible(event.target.checked);
   };
 
+  
+
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent the default form submission
 
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    if(!gmail || !username || !password || !confirmPassword) {
+      setError("All fields are mandatory to fill");
+      return;
+    }
+
     try {
-      await fetch("api/register", {
+      const res = await fetch("api/userExists", {
+        method: "POST",
+        headers:{
+          "Content-Type" : "application/json",
+        },
+        body: JSON.stringify({gmail})
+      })
+
+      const {existingUser} = await res.json();
+
+      if(existingUser) {
+        setError("User already exists");
+        setGmail("");
+        setUsername("");
+        setPassword("");
+        setConfirmPassword("");
+        return;
+      }
+
+      //Register the new user
+      const response = await fetch("api/User", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           gmail,
           username,
           password,
-          confirmPassword
+          confirmPassword,
         }),
       });
+
+
+      if (response.ok) {
+        console.log("Form submission successful, resetting form...");
+        setGmail("");
+        setUsername("");
+        setPassword("");
+        setConfirmPassword("");
+        // form.reset();
+        console.log("Form reset...")
+        router.push("/Form");
+      } else {
+        const result = await response.json();
+        setError(result.message || "An error occurred. Please try again.");
+      }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
+      alert("An error occurred. Please try again.");
     }
   };
 
@@ -43,7 +96,10 @@ const Page = () => {
     <div className="w-full max-w-md p-8 mb-8 mt-0 mx-auto space-y-6 bg-white border border-gray-200 rounded-lg shadow-lg">
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label htmlFor="gmail" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="gmail"
+            className="block text-sm font-medium text-gray-700"
+          >
             Gmail
           </label>
           <input
@@ -57,7 +113,10 @@ const Page = () => {
           />
         </div>
         <div>
-          <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="username"
+            className="block text-sm font-medium text-gray-700"
+          >
             Username
           </label>
           <input
@@ -71,7 +130,10 @@ const Page = () => {
           />
         </div>
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-gray-700"
+          >
             Password
           </label>
           <input
@@ -91,13 +153,19 @@ const Page = () => {
               checked={passwordVisible}
               onChange={handlePasswordVisibilityChange}
             />
-            <label htmlFor="togglePasswordVisibility" className="text-sm text-gray-600">
+            <label
+              htmlFor="togglePasswordVisibility"
+              className="text-sm text-gray-600"
+            >
               Show Password
             </label>
           </div>
         </div>
         <div>
-          <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="confirm-password"
+            className="block text-sm font-medium text-gray-700"
+          >
             Confirm Password
           </label>
           <input
@@ -117,11 +185,22 @@ const Page = () => {
               checked={confirmPasswordVisible}
               onChange={handleConfirmPasswordVisibilityChange}
             />
-            <label htmlFor="toggleConfirmPasswordVisibility" className="text-sm text-gray-600">
+            <label
+              htmlFor="toggleConfirmPasswordVisibility"
+              className="text-sm text-gray-600"
+            >
               Show Confirm Password
             </label>
           </div>
         </div>
+
+        {error && (
+          <div className="text-red-600 text-sm">          
+          {error}
+        </div>
+        
+        )}
+        
         <div>
           <button
             type="submit"

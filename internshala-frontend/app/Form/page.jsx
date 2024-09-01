@@ -14,6 +14,8 @@ const categories = categoriesArray;
 const CategoryPage = () => {
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [responseMessage, setResponseMessage] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSelectChange = (selected) => {
     setSelectedCategory(selected); // Update state with selected options
@@ -52,6 +54,28 @@ const CategoryPage = () => {
 
   return (
     <div className="w-full max-w-md p-8 space-y-6 bg-white border border-gray-200 rounded-lg shadow-lg">
+      <form>
+        User Details
+        <input
+            type="text"
+            onChange={(e) => setEmail(e.target.value)}
+            name="Email"
+            id="Email"
+            placeholder="Internshala Email"
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            required
+          />
+          <input
+            type="text"
+            onChange={(e) => setPassword(e.target.value)}
+            name="password"
+            id="password"
+            placeholder="Internshala Password"
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            required
+          />
+      </form>
+      
       <form className="w-full max-w-md space-y-6" onSubmit={handleSubmit}>
         <Select
           options={categories}

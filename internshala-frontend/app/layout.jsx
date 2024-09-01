@@ -1,26 +1,28 @@
-import '@/styles/globals.css'
-import Nav from '@/app/components/Nav';
-
+import "@/styles/globals.css";
+import Nav from "@/app/components/Nav";
+import { AuthProvider } from "./Providers";
 
 export const metadata = {
-    title : 'Internship | Automation',
-    description : 'Discover & Appply for Internship easily',
-}
+  title: "Internship | Automation",
+  description: "Discover & Appply for Internship easily",
+};
 
-const RootLayout = ({children}) => {
+const RootLayout = ({ children }) => {
   return (
     <html lang="en">
       <body>
-          <div className="main">
-            <div className="gradient"/>
-          </div>
-          <main className="app">
+        <div className="main">
+          <div className="gradient" />
+        </div>
+        <main className="app">
+          <AuthProvider>
             <Nav />
             {children}
-          </main>
+          </AuthProvider>
+        </main>
       </body>
     </html>
-  )
-}
+  );
+};
 
 export default RootLayout;
