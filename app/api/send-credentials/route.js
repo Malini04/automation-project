@@ -7,7 +7,7 @@ export async function POST(req, res) {
 
     // Send the email and password to the server
     const puppeteer = require("puppeteer");
-    const coverLetter = require("../../path_to_your_coverLetter"); // Adjust the path as needed
+    // const coverLetter = require("../../path_to_your_coverLetter"); // Adjust the path as needed
 
     const loginLink = "https://internshala.com/registration/student";
 
